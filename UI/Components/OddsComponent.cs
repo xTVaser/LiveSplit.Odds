@@ -21,8 +21,6 @@ namespace LiveSplit.UI.Components
             Cache = new GraphicsCache();
             this.state = state;
             
-            state.OnSplit += state_OnSplit;
-            state.OnUndoSplit += state_OnUndoSplit;
             state.OnReset += state_OnReset;
             CurrentState = state;
             CurrentState.RunManuallyModified += CurrentState_RunModified;
@@ -136,16 +134,6 @@ namespace LiveSplit.UI.Components
             CalculateOdds();
         }
 
-        // Update the odds of the previous split and pb chance
-        void state_OnUndoSplit(object sender, EventArgs e) {
-            CalculateOdds();
-        }
-
-        // Update the odds of the next split and pb chance
-        void state_OnSplit(object sender, EventArgs e) {
-            CalculateOdds();
-        }
-
         protected Font OddsFont { get; set; }
 
         private void DrawGeneral(Graphics g, Model.LiveSplitState state, float width, float height, LayoutMode mode) {
@@ -196,7 +184,7 @@ namespace LiveSplit.UI.Components
             OddsNameLabel.ShadowColor = state.LayoutSettings.ShadowsColor;
             OddsNameLabel.Draw(g);
 
-            // Set Counter Value Label.
+            // Set Odds Value Label.
             OddsValueLabel.HorizontalAlignment = mode == LayoutMode.Horizontal ? StringAlignment.Far : StringAlignment.Far;
             OddsValueLabel.VerticalAlignment = StringAlignment.Center;
             OddsValueLabel.X = 5;
@@ -204,7 +192,7 @@ namespace LiveSplit.UI.Components
             OddsValueLabel.Width = (width - 10);
             OddsValueLabel.Height = height;
             OddsValueLabel.Font = OddsFont;
-            OddsValueLabel.Brush = new SolidBrush(Settings.OverrideTextColor ? Settings.OddsColor : state.LayoutSettings.TextColor);
+            OddsValueLabel.Brush = new SolidBrush(Settings.OverrideOddsColor ? Settings.OddsColor : state.LayoutSettings.TextColor);
             OddsValueLabel.HasShadow = state.LayoutSettings.DropShadows;
             OddsValueLabel.ShadowColor = state.LayoutSettings.ShadowsColor;
             OddsValueLabel.Draw(g);
@@ -281,9 +269,7 @@ namespace LiveSplit.UI.Components
         }
 
         public void Dispose() {
-
-            state.OnSplit -= state_OnSplit;
-            state.OnUndoSplit -= state_OnUndoSplit;
+            
             state.OnReset -= state_OnReset;
         }
     }

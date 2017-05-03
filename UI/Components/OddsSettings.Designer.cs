@@ -224,6 +224,7 @@
             this.btnOddsColor.Size = new System.Drawing.Size(23, 23);
             this.btnOddsColor.TabIndex = 1;
             this.btnOddsColor.UseVisualStyleBackColor = false;
+            this.btnOddsColor.Click += new System.EventHandler(this.Color2BtnClick);
             // 
             // chkOverrideOddsColor
             // 

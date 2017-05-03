@@ -138,5 +138,10 @@ namespace LiveSplit.UI.Components
         {
             SettingsHelper.ColorButtonClick((Button)sender, this);
         }
+
+        private void Color2BtnClick(object sender, EventArgs e) {
+
+            SettingsHelper.ColorButtonClick((Button)sender, this);
+        }
     }
 }
