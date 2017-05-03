@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E53B4ADC-8FE4-4D3F-AD60-DC1F18897F68}</ProjectGuid>
+    <ProjectGuid>{928E92AE-CDD6-4584-8429-93FD92BF3164}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LiveSplit</RootNamespace>
@@ -28,14 +28,15 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
     <OutputPath>..\..\bin\Release\Components\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>MixedRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release Candidate|AnyCPU'">
     <OutputPath>..\..\bin\Release Candidate\Components\</OutputPath>
@@ -55,15 +56,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TimeFormatters\RegularSumOfBestTimeFormatter.cs" />
-    <Compile Include="UI\Components\SumOfBestComponent.cs" />
+    <Compile Include="UI\Components\OddsComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\Components\SumOfBestFactory.cs" />
-    <Compile Include="UI\Components\SumOfBestSettings.cs">
+    <Compile Include="UI\Components\OddsFactory.cs" />
+    <Compile Include="UI\Components\OddsSettings.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\Components\SumOfBestSettings.Designer.cs">
-      <DependentUpon>SumOfBestSettings.cs</DependentUpon>
+    <Compile Include="UI\Components\OddsSettings.Designer.cs">
+      <DependentUpon>OddsSettings.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -79,8 +79,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UI\Components\SumOfBestSettings.resx">
-      <DependentUpon>SumOfBestSettings.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Components\OddsSettings.resx">
+      <DependentUpon>OddsSettings.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
