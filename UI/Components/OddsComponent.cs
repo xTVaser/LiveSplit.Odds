@@ -58,10 +58,8 @@ namespace LiveSplit.UI.Components
         private List<Double> completeRun = new List<Double>();
 
         public IDictionary<string, Action> ContextMenuControls { get { return null; } }
-
-        /**
-            Saving Time on Current Split
-        */
+        
+        // TODO some of the segment history is incorrect at times, most likely due to new splits being added or removed
         void CalculateOdds() {
 
             ClearOdds();
@@ -74,6 +72,8 @@ namespace LiveSplit.UI.Components
 
             int previousAttempts = 0;
 
+            Time pbDelta = Time.Zero;
+
             // Loop through every split
             for (int i = startIndex; i < endIndex; i++) {
 
@@ -81,13 +81,21 @@ namespace LiveSplit.UI.Components
                 Time pbTime = state.Run[i].PersonalBestSplitTime;
 
                 var attempts = history.Keys;
-                
-                if (i == 0)
-                    // Chances of completeing current split
-                    completeCurrentSplit.Add((Double)attempts.Count / run.AttemptCount);
-                else
-                    // Chances of completeing current split
-                    completeCurrentSplit.Add((Double)attempts.Count / previousAttempts);
+
+                // Something is wrong with the splits, due to adding new ones, etc, so just discount it.
+                if (attempts.Count > run.AttemptCount || attempts.Count > previousAttempts) {
+                    completeCurrentSplit.Add(1.0);
+                    ////previousAttempts = attempts.Count + previousAttempts; // Add onto the next one as they were not used in this calculation
+                }
+
+                else { 
+                    if (i == 0)
+                        // Chances of completeing current split
+                        completeCurrentSplit.Add((Double)attempts.Count / run.AttemptCount);
+                    else
+                        // Chances of completeing current split
+                        completeCurrentSplit.Add((Double)attempts.Count / previousAttempts);
+                }
 
                 int historySavedTime = 0;
                 // Calculate chances of saving time on current split
@@ -95,16 +103,24 @@ namespace LiveSplit.UI.Components
 
                     Time time;
                     bool success = history.TryGetValue(attempt, out time);
-                    if (success && time.RealTime != null && time.RealTime.Value <= pbTime.RealTime.Value)
+                    if (success && time.RealTime != null && time.RealTime.Value <= (pbTime-pbDelta).RealTime.Value)
                         // If the previous segment saved time
                         historySavedTime++;
                 }
 
-                // Store chances of saving time on current split
-                saveTimeCurrentSplit.Add((Double)historySavedTime / attempts.Count);
+                pbDelta += pbTime;
+
+                if (attempts.Count > historySavedTime) {
+                    saveTimeCurrentSplit.Add(1.0);
+                    previousAttempts = attempts.Count + historySavedTime; // Add onto the next one as they were not used in this calculation
+                }
+                else {
+                    // Store chances of saving time on current split
+                    saveTimeCurrentSplit.Add((Double)historySavedTime / attempts.Count);
+                }
 
                 previousAttempts = attempts.Count;
-                
+
                 segmentIndex++;
             }
 
